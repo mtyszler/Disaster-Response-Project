@@ -1,3 +1,20 @@
+"""
+This script is an ETL pipeline for the processing of messages and its classifications
+
+To run ETL pipeline that cleans data and stores in database:
+python [path]process_data.py MESSAGES CATEGORIES DB,
+for example:
+
+python data/process_data.py data/disaster_messages.csv data/disaster_categories.csv data/DisasterResponse.db
+
+It assumes the following:
+* messages and categories are CSV files
+* both have matching ids in variable called 'id'
+* table in the database will be called 'classified_msgs'
+
+"""
+
+
 import sys
 import pandas as pd
 from sqlalchemy import create_engine
