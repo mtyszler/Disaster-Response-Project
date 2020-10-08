@@ -14,7 +14,6 @@ It assumes the following:
 
 """
 
-
 import sys
 import pandas as pd
 from sqlalchemy import create_engine
@@ -106,7 +105,7 @@ def save_data(df, database_filename):
     # where <path> is relative:
     engine = create_engine('sqlite:///foo.db')
     """
-    #print('sqlite:///{}'.format(database_filename))
+    # print('sqlite:///{}'.format(database_filename))
     engine = create_engine('sqlite:///{}'.format(database_filename))
 
     df.to_sql('classified_msgs', engine, index_label='id', index=False, if_exists='replace')
@@ -130,11 +129,11 @@ def main():
         print('Cleaned data saved to database!')
 
     else:
-        print('Please provide the filepaths of the messages and categories ' 
-              'datasets as the first and second argument respectively, as ' 
-              'well as the filepath of the database to save the cleaned data ' 
-              'to as the third argument. \n\nExample: python process_data.py ' 
-              'disaster_messages.csv disaster_categories.csv ' 
+        print('Please provide the filepaths of the messages and categories '
+              'datasets as the first and second argument respectively, as '
+              'well as the filepath of the database to save the cleaned data '
+              'to as the third argument. \n\nExample: python process_data.py '
+              'disaster_messages.csv disaster_categories.csv '
               'DisasterResponse.db')
 
 
