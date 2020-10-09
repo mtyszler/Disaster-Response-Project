@@ -16,8 +16,39 @@ It assumes the following:
 
 """
 
-
 import sys
+import numpy as np
+import pandas as pd
+from sqlalchemy import create_engine
+import re
+import pickle
+
+from nltk.corpus import stopwords
+from nltk.stem.wordnet import WordNetLemmatizer
+from nltk.tokenize import word_tokenize
+from nltk.stem.porter import PorterStemmer
+
+from sklearn.pipeline import Pipeline
+
+from sklearn.metrics import accuracy_score
+from sklearn.metrics import classification_report
+from sklearn.metrics import f1_score
+from sklearn.metrics import make_scorer
+
+from sklearn.model_selection import train_test_split
+from sklearn.feature_extraction.text import CountVectorizer, TfidfTransformer
+from sklearn.ensemble import AdaBoostClassifier
+from sklearn.multioutput import MultiOutputClassifier
+
+from sklearn.model_selection import GridSearchCV
+
+import nltk
+
+# download supporting files
+nltk.download('punkt')
+nltk.download('stopwords')
+nltk.download('wordnet')
+
 
 def average_accuracy(Y_real, Y_pred):
     """
