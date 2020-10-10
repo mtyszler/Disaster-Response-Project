@@ -218,7 +218,7 @@ def load_data(database_filepath):
     return X, Y
 
 
-def tokenize(text):
+def tokenize(text, stop_words=stopwords.words("english")):
     """
     Converts a text to tokens, by the following pipeline:
 
@@ -231,6 +231,7 @@ def tokenize(text):
 
     input:
     text: a string
+    stop_words: list of stop words. Default = stopwords.word("english") from nltk
 
     :return:
     tokenize string, in a list
@@ -238,7 +239,7 @@ def tokenize(text):
     """
 
     # prep nltk transformation objects
-    stop_words = stopwords.words("english")
+
     lemmatizer = WordNetLemmatizer()
     stemmer = PorterStemmer()
 
