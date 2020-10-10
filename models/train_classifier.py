@@ -31,8 +31,10 @@ from nltk.stem.porter import PorterStemmer
 from sklearn.pipeline import Pipeline
 
 from sklearn.metrics import accuracy_score
-from sklearn.metrics import classification_report
+from sklearn.metrics import precision_score
+from sklearn.metrics import recall_score
 from sklearn.metrics import f1_score
+from sklearn.metrics import classification_report
 from sklearn.metrics import make_scorer
 
 from sklearn.model_selection import train_test_split
@@ -63,6 +65,50 @@ def average_accuracy(Y_real, Y_predictions):
     """
 
     return (Y_real == Y_predictions).sum().sum() / Y_real.size
+
+
+def average_precision(Y_real, Y_predictions, avg='macro'):
+    """
+    Computes average precision across all categories:
+
+    inputs:
+    Y_real: correct classifications
+    Y_predictions: predicted classifications
+    avg: Default == 'macro'. See f1_score doc for other options
+
+    Return:
+    accuracy
+    """
+
+    prec = []
+
+    # iterate
+    for i, category in enumerate(Y_real):
+        prec.append(precision_score(Y_real[category], Y_predictions[:, i], average=avg))
+
+    return np.mean(prec)
+
+
+def average_recall(Y_real, Y_predictions, avg='macro'):
+    """
+    Computes average recall across all categories:
+
+    inputs:
+    Y_real: correct classifications
+    Y_predictions: predicted classifications
+    avg: Default == 'macro'. See f1_score doc for other options
+
+    Return:
+    accuracy
+    """
+
+    rec = []
+
+    # iterate
+    for i, category in enumerate(Y_real):
+        rec.append(recall_score(Y_real[category], Y_predictions[:, i], average=avg))
+
+    return np.mean(rec)
 
 
 def average_f1(Y_real, Y_predictions, avg='macro'):
@@ -271,6 +317,12 @@ def evaluate_model(model, X_test, Y_test):
 
     print("Naive accuracy: ", average_accuracy(Y_test, naive_pred))
     print("Optimized model accuracy: ", average_accuracy(Y_test, Y_pred))
+
+    print("Naive precision: ", average_precision(Y_test, naive_pred.to_numpy()))
+    print("Optimized model precision: ", average_precision(Y_test, Y_pred))
+
+    print("Naive recall: ", average_recall(Y_test, naive_pred.to_numpy()))
+    print("Optimized model recall: ", average_recall(Y_test, Y_pred))
 
     print("Naive f1-score: ", average_f1(Y_test, naive_pred.to_numpy()))
     print("Optimized model f1-score: ", average_f1(Y_test, Y_pred))
