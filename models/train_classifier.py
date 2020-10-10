@@ -282,6 +282,10 @@ def build_model():
         'clf__estimator__learning_rate': [1.0, 1.5, 2.0]
     }
 
+    # simplified grid for testing purposes.
+    # comment out for real run
+    # uncomment for simple tests
+
     parameters = {
         'clf__estimator__learning_rate': [1.0, 1.5]
     }
