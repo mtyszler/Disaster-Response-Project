@@ -11,7 +11,7 @@ python models/train_classifier.py data/DisasterResponse.db models/best_model.pkl
 It assumes the following:
 * DB has been prepared by the ETL
 * table in the database will be called 'classified_msgs'
-* 'classified_msgs' has messages (in a field callsed 'messages') and classifications (starting at iloc 4)
+* 'classified_msgs' has messages (in a field called 'messages') and classifications (starting at iloc 4)
 
 
 """
@@ -232,7 +232,7 @@ def tokenize(text):
     input:
     text: a string
 
-    returs:
+    :return:
     tokenize string, in a list
 
     """
@@ -371,9 +371,9 @@ def main():
         print('Trained model saved!')
 
     else:
-        print('Please provide the filepath of the disaster messages database ' 
-              'as the first argument and the filepath of the pickle file to ' 
-              'save the model to as the second argument. \n\nExample: python ' 
+        print('Please provide the filepath of the disaster messages database '
+              'as the first argument and the filepath of the pickle file to '
+              'save the model to as the second argument. \n\nExample: python '
               'train_classifier.py ../data/DisasterResponse.db classifier.pkl')
 
 
