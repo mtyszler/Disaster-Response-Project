@@ -12,19 +12,12 @@ from plotly.graph_objs import Bar
 import joblib
 from sqlalchemy import create_engine
 
+import sys
+sys.path.append('../')
+from models.train_classifier import tokenize, average_f1
+
 
 app = Flask(__name__)
-
-def tokenize(text):
-    tokens = word_tokenize(text)
-    lemmatizer = WordNetLemmatizer()
-
-    clean_tokens = []
-    for tok in tokens:
-        clean_tok = lemmatizer.lemmatize(tok).lower().strip()
-        clean_tokens.append(clean_tok)
-
-    return clean_tokens
 
 # load data
 engine = create_engine('sqlite:///../data/DisasterResponse.db')
