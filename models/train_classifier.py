@@ -379,7 +379,7 @@ def main():
 
         print('')
         print('Saving model...\n    MODEL: {}'.format(model_filepath))
-        save_model(model, model_filepath)
+        save_model(model.best_estimator_, model_filepath)
 
         print('')
         print('Trained model saved!')
