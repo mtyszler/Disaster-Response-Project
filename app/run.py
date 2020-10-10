@@ -14,7 +14,7 @@ from sqlalchemy import create_engine
 
 import sys
 sys.path.append('../')
-from models.train_classifier import tokenize, average_f1
+from models.train_classifier import tokenize
 
 
 app = Flask(__name__)
