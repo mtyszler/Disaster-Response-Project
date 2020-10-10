@@ -361,6 +361,7 @@ def main():
         model = build_model()
 
         print('Training model...')
+        print('Hold on tight: this might take a while...')
         model.fit(X_train, Y_train)
 
         print("Best model:")
