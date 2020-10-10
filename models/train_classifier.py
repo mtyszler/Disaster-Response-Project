@@ -354,26 +354,34 @@ def save_model(model, model_filepath):
 def main():
     if len(sys.argv) == 3:
         database_filepath, model_filepath = sys.argv[1:]
+        print('')
         print('Loading data...\n    DATABASE: {}'.format(database_filepath))
         X, Y = load_data(database_filepath)
         X_train, X_test, Y_train, Y_test = train_test_split(X, Y, test_size=0.2)
 
+        print('')
         print('Building model...')
         model = build_model()
 
+        print('')
         print('Training model...')
         print('Hold on tight: this might take a while...')
+        print('')
         model.fit(X_train, Y_train)
 
+        print('')
         print("Best model:")
         print(model.best_estimator_)
 
+        print('')
         print('Evaluating model...')
         evaluate_model(model, X_test, Y_test)
 
+        print('')
         print('Saving model...\n    MODEL: {}'.format(model_filepath))
         save_model(model, model_filepath)
 
+        print('')
         print('Trained model saved!')
 
     else:
