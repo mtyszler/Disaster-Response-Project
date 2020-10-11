@@ -287,9 +287,11 @@ def build_model():
     # comment out for real run
     # uncomment for simple tests
 
+    '''
     parameters = {
         'clf__estimator__learning_rate': [1.0, 1.5]
     }
+    '''
 
     # scorer using the average_f1
     scorer = make_scorer(average_f1)
