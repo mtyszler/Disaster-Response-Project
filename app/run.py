@@ -2,51 +2,44 @@ import json
 import plotly
 import pandas as pd
 
-from nltk.stem import WordNetLemmatizer
-from nltk.tokenize import word_tokenize
-
 from flask import Flask
 from flask import render_template, request, jsonify
 from plotly.graph_objs import Bar
-#from sklearn.externals import joblib
 import joblib
 from sqlalchemy import create_engine
 
+import sys
+
+sys.path.append('../')
+from models.train_classifier import tokenize
 
 app = Flask(__name__)
 
-def tokenize(text):
-    tokens = word_tokenize(text)
-    lemmatizer = WordNetLemmatizer()
-
-    clean_tokens = []
-    for tok in tokens:
-        clean_tok = lemmatizer.lemmatize(tok).lower().strip()
-        clean_tokens.append(clean_tok)
-
-    return clean_tokens
-
 # load data
-engine = create_engine('sqlite:///../data/YourDatabaseName.db')
-df = pd.read_sql_table('YourTableName', engine)
+engine = create_engine('sqlite:///../data/DisasterResponse.db')
+df = pd.read_sql_table('classified_msgs', engine)
 
 # load model
-model = joblib.load("../models/your_model_name.pkl")
+model = joblib.load("../models/classifier.pkl")
 
 
 # index webpage displays cool visuals and receives user input text for model
 @app.route('/')
 @app.route('/index')
 def index():
-    
     # extract data needed for visuals
     # TODO: Below is an example - modify to extract data for your own visuals
     genre_counts = df.groupby('genre').count()['message']
     genre_names = list(genre_counts.index)
-    
+
+    categs_sorted = df.iloc[:,4:].mean().sort_values(ascending=False)
+    categ_share = categs_sorted
+    categ_names = list(categ.replace('_', ' ') for categ in categs_sorted.index)
+
     # create visuals
     # TODO: Below is an example - modify to create your own visuals
     graphs = [
+        # graph 1
         {
             'data': [
                 Bar(
@@ -64,13 +57,35 @@ def index():
                     'title': "Genre"
                 }
             }
+        },
+
+        # graph 2
+        {
+            'data': [
+                Bar(
+                    x=categ_names,
+                    y=categ_share*100
+                )
+            ],
+
+            'layout': {
+                'title': 'Occurrences of Categories',
+                'orientation': 'v',
+                'yaxis': {
+                    'title': "Proportion (%)",
+                    'range': [1, 100]
+                },
+                'xaxis': {
+                    'title': "Category"
+                }
+            }
         }
     ]
-    
+
     # encode plotly graphs in JSON
     ids = ["graph-{}".format(i) for i, _ in enumerate(graphs)]
     graphJSON = json.dumps(graphs, cls=plotly.utils.PlotlyJSONEncoder)
-    
+
     # render web page with plotly graphs
     return render_template('master.html', ids=ids, graphJSON=graphJSON)
 
@@ -79,7 +94,7 @@ def index():
 @app.route('/go')
 def go():
     # save user input in query
-    query = request.args.get('query', '') 
+    query = request.args.get('query', '')
 
     # use model to predict classification for query
     classification_labels = model.predict([query])[0]
