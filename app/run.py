@@ -9,9 +9,9 @@ import joblib
 from sqlalchemy import create_engine
 
 import sys
+
 sys.path.append('../')
 from models.train_classifier import tokenize
-
 
 app = Flask(__name__)
 
@@ -27,15 +27,18 @@ model = joblib.load("../models/classifier.pkl")
 @app.route('/')
 @app.route('/index')
 def index():
-    
     # extract data needed for visuals
     # TODO: Below is an example - modify to extract data for your own visuals
     genre_counts = df.groupby('genre').count()['message']
     genre_names = list(genre_counts.index)
-    
+
+    categ_share = df.iloc[:,4:].mean().sort_values(ascending=False)
+    categ_names = list(col.replace('_', ' ') for col in df.columns[4:])
+
     # create visuals
     # TODO: Below is an example - modify to create your own visuals
     graphs = [
+        # graph 1
         {
             'data': [
                 Bar(
@@ -53,13 +56,35 @@ def index():
                     'title': "Genre"
                 }
             }
+        },
+
+        # graph 2
+        {
+            'data': [
+                Bar(
+                    x=categ_names,
+                    y=categ_share*100
+                )
+            ],
+
+            'layout': {
+                'title': 'Occurrences of Categories',
+                'orientation': 'v',
+                'yaxis': {
+                    'title': "Proportion (%)",
+                    'range': [1, 100]
+                },
+                'xaxis': {
+                    'title': "Category"
+                }
+            }
         }
     ]
-    
+
     # encode plotly graphs in JSON
     ids = ["graph-{}".format(i) for i, _ in enumerate(graphs)]
     graphJSON = json.dumps(graphs, cls=plotly.utils.PlotlyJSONEncoder)
-    
+
     # render web page with plotly graphs
     return render_template('master.html', ids=ids, graphJSON=graphJSON)
 
@@ -68,7 +93,7 @@ def index():
 @app.route('/go')
 def go():
     # save user input in query
-    query = request.args.get('query', '') 
+    query = request.args.get('query', '')
 
     # use model to predict classification for query
     classification_labels = model.predict([query])[0]
