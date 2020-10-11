@@ -32,8 +32,9 @@ def index():
     genre_counts = df.groupby('genre').count()['message']
     genre_names = list(genre_counts.index)
 
-    categ_share = df.iloc[:,4:].mean().sort_values(ascending=False)
-    categ_names = list(col.replace('_', ' ') for col in df.columns[4:])
+    categs_sorted = df.iloc[:,4:].mean().sort_values(ascending=False)
+    categ_share = categs_sorted
+    categ_names = list(categ.replace('_', ' ') for categ in categs_sorted.index)
 
     # create visuals
     # TODO: Below is an example - modify to create your own visuals
