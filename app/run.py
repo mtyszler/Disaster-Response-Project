@@ -11,16 +11,30 @@ from sqlalchemy import create_engine
 import sys
 
 sys.path.append('../')
-from models.train_classifier import tokenize
+sys.path.append('.')
+from models.supporting_functions import tokenize
 
 app = Flask(__name__)
 
-# load data
-engine = create_engine('sqlite:///../data/DisasterResponse.db')
-df = pd.read_sql_table('classified_msgs', engine)
 
-# load model
-model = joblib.load("../models/classifier.pkl")
+@app.before_first_request
+def load_models():
+    # from utils import tokenize
+
+    global model
+    try:
+        model = joblib.load("../models/classifier.pkl")
+    except:
+        model = joblib.load("models/classifier.pkl")
+
+
+# load data
+try:
+    engine = create_engine('sqlite:///../data/DisasterResponse.db')
+    df = pd.read_sql_table('classified_msgs', engine)
+except:
+    engine = create_engine('sqlite:///data/DisasterResponse.db')
+    df = pd.read_sql_table('classified_msgs', engine)
 
 
 # index webpage displays cool visuals and receives user input text for model
@@ -32,7 +46,7 @@ def index():
     genre_counts = df.groupby('genre').count()['message']
     genre_names = list(genre_counts.index)
 
-    categs_sorted = df.iloc[:,4:].mean().sort_values(ascending=False)
+    categs_sorted = df.iloc[:, 4:].mean().sort_values(ascending=False)
     categ_share = categs_sorted
     categ_names = list(categ.replace('_', ' ') for categ in categs_sorted.index)
 
@@ -64,7 +78,7 @@ def index():
             'data': [
                 Bar(
                     x=categ_names,
-                    y=categ_share*100
+                    y=categ_share * 100
                 )
             ],
 
