@@ -32,7 +32,7 @@ def index():
     genre_counts = df.groupby('genre').count()['message']
     genre_names = list(genre_counts.index)
 
-    categs_sorted = df.iloc[:,4:].mean().sort_values(ascending=False)
+    categs_sorted = df.iloc[:, 4:].mean().sort_values(ascending=False)
     categ_share = categs_sorted
     categ_names = list(categ.replace('_', ' ') for categ in categs_sorted.index)
 
@@ -64,7 +64,7 @@ def index():
             'data': [
                 Bar(
                     x=categ_names,
-                    y=categ_share*100
+                    y=categ_share * 100
                 )
             ],
 
