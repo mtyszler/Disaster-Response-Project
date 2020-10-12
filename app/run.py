@@ -11,16 +11,30 @@ from sqlalchemy import create_engine
 import sys
 
 sys.path.append('../')
+sys.path.append('.')
 from models.supporting_functions import tokenize
 
 app = Flask(__name__)
 
-# load data
-engine = create_engine('sqlite:///../data/DisasterResponse.db')
-df = pd.read_sql_table('classified_msgs', engine)
 
-# load model
-model = joblib.load("../models/classifier.pkl")
+@app.before_first_request
+def load_models():
+    # from utils import tokenize
+
+    global model
+    try:
+        model = joblib.load("../models/classifier.pkl")
+    except:
+        model = joblib.load("models/classifier.pkl")
+
+
+# load data
+try:
+    engine = create_engine('sqlite:///../data/DisasterResponse.db')
+    df = pd.read_sql_table('classified_msgs', engine)
+except:
+    engine = create_engine('sqlite:///data/DisasterResponse.db')
+    df = pd.read_sql_table('classified_msgs', engine)
 
 
 # index webpage displays cool visuals and receives user input text for model
