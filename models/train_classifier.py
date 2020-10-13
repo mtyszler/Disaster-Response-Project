@@ -34,6 +34,7 @@ from sklearn.multioutput import MultiOutputClassifier
 
 from sklearn.model_selection import GridSearchCV
 
+sys.path.append('.')
 from models.supporting_functions import *
 
 
