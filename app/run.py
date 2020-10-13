@@ -37,6 +37,12 @@ except:
 @app.route('/')
 @app.route('/index')
 def index():
+    # render base page
+    return render_template('classifier.html')
+
+
+@app.route('/training')
+def training():
     # extract data needed for visuals
     # TODO: Below is an example - modify to extract data for your own visuals
     genre_counts = df.groupby('genre').count()['message']
@@ -97,7 +103,7 @@ def index():
     graphJSON = json.dumps(graphs, cls=plotly.utils.PlotlyJSONEncoder)
 
     # render web page with plotly graphs
-    return render_template('master.html', ids=ids, graphJSON=graphJSON)
+    return render_template('training.html', ids=ids, graphJSON=graphJSON)
 
 
 # web page that handles user query and displays model results
