@@ -17,15 +17,11 @@ from models.supporting_functions import tokenize
 app = Flask(__name__)
 
 
-@app.before_first_request
-def load_models():
-    # from utils import tokenize
-
-    global model
-    try:
-        model = joblib.load("../models/classifier.pkl")
-    except:
-        model = joblib.load("models/classifier.pkl")
+# load model
+try:
+    model = joblib.load("../models/classifier.pkl")
+except:
+    model = joblib.load("models/classifier.pkl")
 
 
 # load data
