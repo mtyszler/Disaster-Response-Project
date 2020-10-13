@@ -53,9 +53,9 @@ A live version of the app can be see at https://disaster-response-livedemo.herok
 
 This projects uses **Python 3.7.9** and was developed in windows 10 system. Python package requirements can be found in [`requirements.txt`](https://github.com/mtyszler/Disaster-Response-Project/blob/main/requirements.txt).
 
-Because the project is deployed at Heroku, which uses **Python 3.6.12** package `traitlets` has been set to version `4.3.3` which is the latest version complaint with Python 3.6
+Because the project is deployed at Heroku, which uses **Python 3.6.12** package `traitlets` has been set to version `4.3.3` which is the latest version complaint with **Python 3.6**
 
-## Credtis and acknowledgments
+## Credits and acknowledgments
 
 Thanks to [Udacity](https://www.udacity.com/) for providing the skeleton code and [Figure Eight](https://www.figure-eight.com/?ref=Welcome.AI) for providing the training dataset
 
