@@ -43,6 +43,11 @@ def index():
 
 @app.route('/training')
 def training():
+    # get shape info:
+    X_len = len(df.index) 
+    Y_len = len(df.iloc[:, 4:].columns)
+
+
     # extract data needed for visuals
     # TODO: Below is an example - modify to extract data for your own visuals
     genre_counts = df.groupby('genre').count()['message']
@@ -103,7 +108,7 @@ def training():
     graphJSON = json.dumps(graphs, cls=plotly.utils.PlotlyJSONEncoder)
 
     # render web page with plotly graphs
-    return render_template('training.html', ids=ids, graphJSON=graphJSON)
+    return render_template('training.html', ids=ids, graphJSON=graphJSON, n_rows = X_len, n_cols = Y_len)
 
 
 # web page that handles user query and displays model results
