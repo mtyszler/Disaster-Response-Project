@@ -130,6 +130,12 @@ def go():
     )
 
 
+@app.route('/performance')
+def performance():
+    # render base page
+    return render_template('performance.html')
+
+
 def main():
     app.run(host='0.0.0.0', port=3001, debug=True)
 
