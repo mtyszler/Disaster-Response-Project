@@ -94,7 +94,8 @@ def training():
                 'orientation': 'v',
                 'yaxis': {
                     'title': "Proportion (%)",
-                    'range': [1, 100]
+                    'range': [1, 100],
+                    'hoverformat': '.2f'
                 },
                 'xaxis': {
                     'title': "Category"
