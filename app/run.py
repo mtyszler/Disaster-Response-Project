@@ -1,6 +1,7 @@
 import json
 import plotly
 import pandas as pd
+import random
 
 from flask import Flask
 from flask import render_template, request, jsonify
@@ -132,8 +133,36 @@ def go():
 
 @app.route('/performance')
 def performance():
-    # render base page
-    return render_template('performance.html')
+    
+    # gets the number of messages & categs
+    n_msgs = len(df.index) 
+    n_categs = len(df.iloc[:, 4:].columns)
+
+    # selects a random row:
+    row_number = random.randrange(0,n_msgs)
+
+    # picks the message and targets:
+    msg = df['message'][row_number]
+    targets = df.iloc[row_number, 4:]
+
+    # predict:
+    predictions = model.predict([msg])[0]
+
+    # number of correct classifications:
+    correct_classifications = (targets == predictions).sum()
+    incorrect_classifications = n_categs - correct_classifications
+
+    # combine it all
+    classification_results = zip(df.columns[4:], targets.astype(bool), predictions.astype(bool))
+
+    # render perfomance page
+    return render_template(
+        'performance.html',
+        msg = msg,
+        classification_result=classification_results,
+        correct = correct_classifications,
+        incorrect = incorrect_classifications
+        )
 
 
 def main():
