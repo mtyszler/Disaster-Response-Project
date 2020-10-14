@@ -45,6 +45,30 @@ In the project's root directory:
 * Alternatevely, in unix system type:
 `gunicorn app.run:app -b 0.0.0.0:3001` to run a local gunicorn server
 
+## Web app:
+
+The web app has 3 pages:
+
+### Home (= landing page)
+![](screenshots/classification.png)
+
+This page has form to type a message. After clicking `classify` the app returns the predicted categories for the message. 
+
+This is the main use of the app.
+
+
+### About the training set
+![](screenshots/training_set.png)
+
+This page has some basic info and two graphs about the training set.
+
+
+### ML model performance
+![](screenshots/performance.png)
+
+This page has some info about the performance of the ML model. It selects a random message from the training set and shows the match between target and prediction.
+
+
 ## Live Demo
 
 A live version of the app can be see at https://disaster-response-livedemo.herokuapp.com/
